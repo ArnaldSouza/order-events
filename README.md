@@ -176,4 +176,4 @@ the repository and the Kafka producer) and a context-load test.
 
 ## License
 
-This project is for educational and portfolio purposes.
+MIT
