@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Start PostgreSQL and Kafka
+        run: |
+          docker compose up -d --wait postgres kafka
+          for i in $(seq 1 30); do
+            docker compose exec -T kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list && break
+            sleep 2
+          done
+
+      - name: Run tests
+        run: |
+          chmod +x mvnw
+          ./mvnw -B test
+
+      - name: Show service logs on failure
+        if: failure()
+        run: docker compose logs --tail=60 postgres kafka
