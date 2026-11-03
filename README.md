@@ -1,5 +1,7 @@
 # Order Events
 
+[![CI](https://github.com/ArnaldSouza/order-events/actions/workflows/ci.yml/badge.svg)](https://github.com/ArnaldSouza/order-events/actions/workflows/ci.yml)
+
 An event-driven order processing service built with Spring Boot and Apache Kafka.
 Creating an order persists it and publishes an event; a separate consumer reacts
 to that event and updates the order's status — demonstrating asynchronous,
